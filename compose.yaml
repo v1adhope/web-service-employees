@@ -1,4 +1,13 @@
 services:
+  app:
+    build: .
+    image: web-service-employees-app
+    ports:
+      - 8090:8090
+    environment:
+      APP_MONGO_CONSTR: mongodb://storage:27017/employeeStorage?timeoutMS=10000&maxPoolSize=99
+      APP_SERVER_SOCKET: 0.0.0.0:8090
+
   storage:
     image: mongo:latest
     ports:

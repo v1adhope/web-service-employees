@@ -1,4 +1,3 @@
-// TODO
 package v1
 
 import (
@@ -65,11 +64,6 @@ func (rs *Routes) delete(w http.ResponseWriter, r *http.Request) {
 }
 
 func (rs *Routes) byCompany(w http.ResponseWriter, r *http.Request) {
-	// if r.URL.Path == "/" || r.Method != http.MethodGet {
-	// 	w.WriteHeader(http.StatusNotFound)
-	// 	return
-	// }
-
 	rawID := r.URL.Query().Get("id")
 
 	id, err := strconv.Atoi(rawID)
@@ -93,11 +87,6 @@ func (rs *Routes) byCompany(w http.ResponseWriter, r *http.Request) {
 }
 
 func (rs *Routes) byDeportament(w http.ResponseWriter, r *http.Request) {
-	// if r.URL.Path == "/" || r.Method != http.MethodGet {
-	// 	w.WriteHeader(http.StatusNotFound)
-	// 	return
-	// }
-
 	name := r.URL.Query().Get("name")
 
 	emp, err := rs.u.GetByDepartament(r.Context(), name)

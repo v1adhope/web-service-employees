@@ -1,4 +1,3 @@
-// TODO
 // INFO: Out plain/text if problem with marshal
 package v1
 
@@ -11,7 +10,7 @@ import (
 func JSON(w http.ResponseWriter, code int, data any) {
 	buf, err := json.Marshal(data)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusBadRequest)
 	}
 
 	w.Header().Set("content-type", "application/json")
@@ -33,7 +32,7 @@ func BindJSON(w http.ResponseWriter, r *http.Request, placeholder any) error {
 			"msg": err,
 		})
 		if err != nil {
-			http.Error(w, "encode error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusBadRequest)
 		}
 
 		w.WriteHeader(http.StatusBadRequest)

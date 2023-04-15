@@ -3,7 +3,7 @@
 default: build
 
 build:
-	go build -race -o .bin/app.go cmd/app.go
+	go build -race -o .bin/app cmd/app.go
 
 stop:
 	docker compose down -v

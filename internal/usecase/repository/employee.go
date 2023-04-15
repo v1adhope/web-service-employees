@@ -41,7 +41,7 @@ func (r *Repo) Insert(ctx context.Context, emp entity.Employee) (string, error) 
 
 func (r *Repo) DeleteByID(ctx context.Context, id string) error {
 	objID, err := primitive.ObjectIDFromHex(id)
-	fmt.Println(objID)
+
 	filter := bson.D{{"_id", objID}}
 
 	res, err := r.Col.DeleteOne(ctx, filter)
@@ -64,6 +64,10 @@ func (r *Repo) GetByCompany(ctx context.Context, companyID int) ([]entity.Employ
 	}
 	defer cursor.Close(ctx)
 
+	if cursor.RemainingBatchLength() == 0 {
+		return nil, mongo.ErrNoDocuments
+	}
+
 	var res []entity.Employee
 
 	if err := cursor.All(ctx, &res); err != nil {
@@ -81,6 +85,10 @@ func (r *Repo) GetByDepartament(ctx context.Context, deportment string) ([]entit
 		return nil, fmt.Errorf("repository: GetByDepartament: Find: %w", err)
 	}
 	defer cursor.Close(ctx)
+
+	if cursor.RemainingBatchLength() == 0 {
+		return nil, mongo.ErrNoDocuments
+	}
 
 	var res []entity.Employee
 
