@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 	"net/http"
-	"os"
 
+	"github.com/v1adhope/web-service-employees/internal/config"
 	v1 "github.com/v1adhope/web-service-employees/internal/controller/http/v1"
 	"github.com/v1adhope/web-service-employees/internal/usecase"
 	"github.com/v1adhope/web-service-employees/internal/usecase/repository"
@@ -13,20 +13,14 @@ import (
 )
 
 const (
-	_mongoConStr  = "APP_MONGO_CONSTR"
-	_serverSocket = "APP_SERVER_SOCKET"
-
 	_dbName  = "employeeStorage"
 	_colName = "employee"
 )
 
 func main() {
-	var conStr, serverSocket string
+	cfg := config.GetConfig()
 
-	getEnv(_mongoConStr, &conStr)
-	getEnv(_serverSocket, &serverSocket)
-
-	mongoClient, err := mongodb.New(context.Background(), conStr)
+	mongoClient, err := mongodb.New(context.Background(), cfg.ConStr)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -40,13 +34,7 @@ func main() {
 
 	v1.New(mux, usecase)
 
-	if err := http.ListenAndServe(serverSocket, mux); err != nil {
+	if err := http.ListenAndServe(cfg.ServerSocket, mux); err != nil {
 		log.Fatal(err)
-	}
-}
-
-func getEnv(key string, placeholder *string) {
-	if env := os.Getenv(key); env != "" {
-		*placeholder = env
 	}
 }

@@ -34,7 +34,7 @@ POST
 http://localhost:8090/v1/delete/
 
 {
-    "id": "643a6c8d8e97bc97d1eadcf9"
+    "id": "<ID>"
 }
 ```
 DELETE
@@ -55,7 +55,7 @@ http://localhost:8090/v1/update/
     "phone": "unknown",
     "companyID": 2,
     "passport": {
-        "type": "D",
+        "type": "P",
         "number": "43612684524"
     },
     "deportament": {
