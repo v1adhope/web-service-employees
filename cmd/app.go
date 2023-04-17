@@ -20,7 +20,7 @@ const (
 func main() {
 	cfg := config.GetConfig()
 
-	mongoClient, err := mongodb.New(context.Background(), cfg.ConStr)
+	mongoClient, err := mongodb.New(context.Background(), cfg.MongoConURL)
 	if err != nil {
 		log.Fatal(err)
 	}

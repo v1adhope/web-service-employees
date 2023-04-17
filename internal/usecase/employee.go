@@ -34,8 +34,8 @@ func (uc *UseCase) DeleteByID(ctx context.Context, id string) error {
 	return nil
 }
 
-func (uc *UseCase) GetByCompany(ctx context.Context, companyID int) ([]entity.Employee, error) {
-	emp, err := uc.Repo.GetByCompany(ctx, companyID)
+func (uc *UseCase) GetByCompanyID(ctx context.Context, companyID int) ([]entity.Employee, error) {
+	emp, err := uc.Repo.GetByCompanyID(ctx, companyID)
 	if err != nil {
 		return nil, err
 	}
@@ -43,8 +43,8 @@ func (uc *UseCase) GetByCompany(ctx context.Context, companyID int) ([]entity.Em
 	return emp, nil
 }
 
-func (uc *UseCase) GetByDepartament(ctx context.Context, deportment string) ([]entity.Employee, error) {
-	emp, err := uc.Repo.GetByDepartament(ctx, deportment)
+func (uc *UseCase) GetByDeportamentName(ctx context.Context, deportment string) ([]entity.Employee, error) {
+	emp, err := uc.Repo.GetByDeportamentName(ctx, deportment)
 	if err != nil {
 		return nil, err
 	}

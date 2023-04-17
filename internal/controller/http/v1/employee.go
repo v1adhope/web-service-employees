@@ -16,9 +16,9 @@ type Routes struct {
 func NewRoutes(r *Routes) {
 	r.mux.HandleFunc("/v1/add/", r.add)
 	r.mux.HandleFunc("/v1/delete/", r.delete)
-	r.mux.HandleFunc("/v1/bycompany/", r.byCompany)
-	r.mux.HandleFunc("/v1/bydeportament/", r.byDeportament)
-	r.mux.HandleFunc("/v1/update/", r.update)
+	r.mux.HandleFunc("/v1/all-by-company/", r.getAllByCompanyID)
+	r.mux.HandleFunc("/v1/all-by-deportament/", r.getAllByDeportamentName)
+	r.mux.HandleFunc("/v1/update-part/", r.updatePart)
 }
 
 func (rs *Routes) add(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +31,7 @@ func (rs *Routes) add(w http.ResponseWriter, r *http.Request) {
 
 	id, err := rs.u.Create(r.Context(), emp)
 	if err != nil {
-		JSON(w, http.StatusInternalServerError, map[string]any{
+		JSON(w, http.StatusTeapot, map[string]any{
 			"msg": err.Error(),
 		})
 
@@ -53,7 +53,7 @@ func (rs *Routes) delete(w http.ResponseWriter, r *http.Request) {
 
 	err = rs.u.DeleteByID(r.Context(), dto.ID)
 	if err != nil {
-		JSON(w, http.StatusInternalServerError, map[string]any{
+		JSON(w, http.StatusTeapot, map[string]any{
 			"msg": err.Error(),
 		})
 
@@ -63,20 +63,29 @@ func (rs *Routes) delete(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (rs *Routes) byCompany(w http.ResponseWriter, r *http.Request) {
+func (rs *Routes) getAllByCompanyID(w http.ResponseWriter, r *http.Request) {
 	rawID := r.URL.Query().Get("id")
+
+	if rawID == "" {
+		JSON(w, http.StatusBadRequest, map[string]any{
+			"msg": "query is empty",
+		})
+
+		return
+	}
 
 	id, err := strconv.Atoi(rawID)
 	if err != nil {
-		JSON(w, http.StatusInternalServerError, map[string]any{
-			"msg": err.Error(),
+		JSON(w, http.StatusBadRequest, map[string]any{
+			"msg": "invalid id",
 		})
+
 		return
 	}
 
-	emp, err := rs.u.GetByCompany(r.Context(), id)
+	emp, err := rs.u.GetByCompanyID(r.Context(), id)
 	if err != nil {
-		JSON(w, http.StatusInternalServerError, map[string]any{
+		JSON(w, http.StatusTeapot, map[string]any{
 			"msg": err.Error(),
 		})
 
@@ -86,12 +95,20 @@ func (rs *Routes) byCompany(w http.ResponseWriter, r *http.Request) {
 	JSON(w, http.StatusOK, emp)
 }
 
-func (rs *Routes) byDeportament(w http.ResponseWriter, r *http.Request) {
+func (rs *Routes) getAllByDeportamentName(w http.ResponseWriter, r *http.Request) {
 	name := r.URL.Query().Get("name")
 
-	emp, err := rs.u.GetByDepartament(r.Context(), name)
+	if name == "" {
+		JSON(w, http.StatusBadRequest, map[string]any{
+			"msg": "query is empty",
+		})
+
+		return
+	}
+
+	emp, err := rs.u.GetByDeportamentName(r.Context(), name)
 	if err != nil {
-		JSON(w, http.StatusInternalServerError, map[string]any{
+		JSON(w, http.StatusTeapot, map[string]any{
 			"msg": err.Error(),
 		})
 
@@ -101,7 +118,7 @@ func (rs *Routes) byDeportament(w http.ResponseWriter, r *http.Request) {
 	JSON(w, http.StatusOK, emp)
 }
 
-func (rs *Routes) update(w http.ResponseWriter, r *http.Request) {
+func (rs *Routes) updatePart(w http.ResponseWriter, r *http.Request) {
 	var emp entity.Employee
 
 	err := BindJSON(w, r, &emp)
@@ -111,7 +128,7 @@ func (rs *Routes) update(w http.ResponseWriter, r *http.Request) {
 
 	err = rs.u.UpdateByID(r.Context(), emp)
 	if err != nil {
-		JSON(w, http.StatusInternalServerError, map[string]any{
+		JSON(w, http.StatusTeapot, map[string]any{
 			"msg": err.Error(),
 		})
 

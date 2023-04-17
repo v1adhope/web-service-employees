@@ -6,12 +6,12 @@ import (
 )
 
 const (
-	_mongoConStr  = "APP_MONGO_CONSTR"
+	_mongoConURL  = "APP_MONGO_CONURL"
 	_serverSocket = "APP_SERVER_SOCKET"
 )
 
 type Config struct {
-	ConStr, ServerSocket string
+	MongoConURL, ServerSocket string
 }
 
 var (
@@ -23,11 +23,11 @@ func GetConfig() *Config {
 	once.Do(
 		func() {
 			cfg = &Config{
-				ConStr:       "mongodb://storage:27017/employeeStorage?timeoutMS=10000",
+				MongoConURL:  "mongodb://storage:27017/employeeStorage?timeoutMS=10000",
 				ServerSocket: "0.0.0.0:8090",
 			}
 
-			getEnv(_mongoConStr, &cfg.ConStr)
+			getEnv(_mongoConURL, &cfg.MongoConURL)
 			getEnv(_serverSocket, &cfg.ServerSocket)
 		})
 

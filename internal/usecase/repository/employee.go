@@ -55,7 +55,7 @@ func (r *Repo) DeleteByID(ctx context.Context, id string) error {
 	return nil
 }
 
-func (r *Repo) GetByCompany(ctx context.Context, companyID int) ([]entity.Employee, error) {
+func (r *Repo) GetByCompanyID(ctx context.Context, companyID int) ([]entity.Employee, error) {
 	filter := bson.D{{"companyID", companyID}}
 
 	cursor, err := r.Col.Find(ctx, filter)
@@ -77,8 +77,8 @@ func (r *Repo) GetByCompany(ctx context.Context, companyID int) ([]entity.Employ
 	return res, nil
 }
 
-func (r *Repo) GetByDepartament(ctx context.Context, deportment string) ([]entity.Employee, error) {
-	filter := bson.D{{"deportament.name", deportment}}
+func (r *Repo) GetByDeportamentName(ctx context.Context, deportmentName string) ([]entity.Employee, error) {
+	filter := bson.D{{"deportament.name", deportmentName}}
 
 	cursor, err := r.Col.Find(ctx, filter)
 	if err != nil {

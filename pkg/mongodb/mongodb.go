@@ -12,9 +12,9 @@ type MongoDB struct {
 	Client *mongo.Client
 }
 
-func New(ctx context.Context, uri string) (*MongoDB, error) {
+func New(ctx context.Context, conURL string) (*MongoDB, error) {
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-	opts := options.Client().ApplyURI(uri).SetServerAPIOptions(serverAPI)
+	opts := options.Client().ApplyURI(conURL).SetServerAPIOptions(serverAPI)
 
 	client, err := mongo.Connect(ctx, opts)
 	if err != nil {
