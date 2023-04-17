@@ -40,13 +40,13 @@ http://localhost:8090/v1/delete/
 DELETE
 
 ```
-http://localhost:8090/v1/bycompany/?id=1
-http://localhost:8090/v1/bydeportament/?name=404
+http://localhost:8090/v1/all-by-company/?id=1
+http://localhost:8090/v1/all-by-deportament/?name=404
 ```
 GET
 
 ```
-http://localhost:8090/v1/update/
+http://localhost:8090/v1/update-part/
 
 {
     "id":"643a6c8d8e97bc97d1eadcf9",
