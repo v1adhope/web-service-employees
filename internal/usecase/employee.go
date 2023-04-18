@@ -1,6 +1,3 @@
-// INFO: Errors do not wrapped, there is no logic, nothing will happen.
-// INFO: Pointers are not used for the same reason.
-
 package usecase
 
 import (
@@ -34,7 +31,7 @@ func (uc *UseCase) DeleteByID(ctx context.Context, id string) error {
 	return nil
 }
 
-func (uc *UseCase) GetByCompanyID(ctx context.Context, companyID int) ([]entity.Employee, error) {
+func (uc *UseCase) GetByCompanyID(ctx context.Context, companyID string) ([]entity.Employee, error) {
 	emp, err := uc.Repo.GetByCompanyID(ctx, companyID)
 	if err != nil {
 		return nil, err

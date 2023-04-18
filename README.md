@@ -1,5 +1,7 @@
 # Mongo and clean go
 
+[task](/assets/task.md)
+
 Variables are configured in compose and main.
 
 ```
@@ -10,13 +12,13 @@ Mongo express
 # CRUD examle of operations
 
 ```
-http://localhost:8090/v1/add/
+http://localhost:8090/v1/employee/
 
 {
     "name": "Vladislav",
     "surname": "Gardner",
     "phone": "1248901184",
-    "companyID": 1,
+    "companyID": "1",
     "passport": {
         "type": "D",
         "number": "48357419414"
@@ -31,7 +33,7 @@ http://localhost:8090/v1/add/
 POST
 
 ```
-http://localhost:8090/v1/delete/
+http://localhost:8090/v1/employee/
 
 {
     "id": "<ID>"
@@ -40,20 +42,20 @@ http://localhost:8090/v1/delete/
 DELETE
 
 ```
-http://localhost:8090/v1/all-by-company/?id=1
-http://localhost:8090/v1/all-by-deportament/?name=404
+http://localhost:8090/v1/employees-by-company/?id=1
+http://localhost:8090/v1/employees-by-deportament/?name=404
 ```
 GET
 
 ```
-http://localhost:8090/v1/update-part/
+http://localhost:8090/v1/employee/
 
 {
     "id":"643a6c8d8e97bc97d1eadcf9",
     "name": "Noname",
     "surname": "Nosurname",
     "phone": "unknown",
-    "companyID": 2,
+    "companyID": "2",
     "passport": {
         "type": "P",
         "number": "43612684524"

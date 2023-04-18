@@ -1,8 +1,8 @@
+// INFO: No error handling, no validation
 package v1
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/v1adhope/web-service-employees/internal/entity"
 	"github.com/v1adhope/web-service-employees/internal/usecase"
@@ -14,11 +14,22 @@ type Routes struct {
 }
 
 func NewRoutes(r *Routes) {
-	r.mux.HandleFunc("/v1/add/", r.add)
-	r.mux.HandleFunc("/v1/delete/", r.delete)
-	r.mux.HandleFunc("/v1/all-by-company/", r.getAllByCompanyID)
-	r.mux.HandleFunc("/v1/all-by-deportament/", r.getAllByDeportamentName)
-	r.mux.HandleFunc("/v1/update-part/", r.updatePart)
+	r.mux.HandleFunc("/v1/employee/", r.employee)
+	r.mux.HandleFunc("/v1/employees-by-company/", r.getAllByCompanyID)
+	r.mux.HandleFunc("/v1/employees-by-deportament/", r.getAllByDeportamentName)
+}
+
+func (rs *Routes) employee(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodPost:
+		rs.add(w, r)
+	case http.MethodDelete:
+		rs.delete(w, r)
+	case http.MethodPatch:
+		rs.updatePart(w, r)
+	default:
+		rs.writeNotFound(w)
+	}
 }
 
 func (rs *Routes) add(w http.ResponseWriter, r *http.Request) {
@@ -63,61 +74,6 @@ func (rs *Routes) delete(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (rs *Routes) getAllByCompanyID(w http.ResponseWriter, r *http.Request) {
-	rawID := r.URL.Query().Get("id")
-
-	if rawID == "" {
-		JSON(w, http.StatusBadRequest, map[string]any{
-			"msg": "query is empty",
-		})
-
-		return
-	}
-
-	id, err := strconv.Atoi(rawID)
-	if err != nil {
-		JSON(w, http.StatusBadRequest, map[string]any{
-			"msg": "invalid id",
-		})
-
-		return
-	}
-
-	emp, err := rs.u.GetByCompanyID(r.Context(), id)
-	if err != nil {
-		JSON(w, http.StatusTeapot, map[string]any{
-			"msg": err.Error(),
-		})
-
-		return
-	}
-
-	JSON(w, http.StatusOK, emp)
-}
-
-func (rs *Routes) getAllByDeportamentName(w http.ResponseWriter, r *http.Request) {
-	name := r.URL.Query().Get("name")
-
-	if name == "" {
-		JSON(w, http.StatusBadRequest, map[string]any{
-			"msg": "query is empty",
-		})
-
-		return
-	}
-
-	emp, err := rs.u.GetByDeportamentName(r.Context(), name)
-	if err != nil {
-		JSON(w, http.StatusTeapot, map[string]any{
-			"msg": err.Error(),
-		})
-
-		return
-	}
-
-	JSON(w, http.StatusOK, emp)
-}
-
 func (rs *Routes) updatePart(w http.ResponseWriter, r *http.Request) {
 	var emp entity.Employee
 
@@ -136,4 +92,60 @@ func (rs *Routes) updatePart(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
+}
+
+func (rs *Routes) getAllByCompanyID(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		rs.writeNotFound(w)
+		return
+	}
+
+	id := r.URL.Query().Get("id")
+
+	if id == "" {
+		JSON(w, http.StatusBadRequest, map[string]any{
+			"msg": _errQueryIsEmpty.Error(),
+		})
+
+		return
+	}
+
+	emp, err := rs.u.GetByCompanyID(r.Context(), id)
+	if err != nil {
+		JSON(w, http.StatusTeapot, map[string]any{
+			"msg": err.Error(),
+		})
+
+		return
+	}
+
+	JSON(w, http.StatusOK, emp)
+}
+
+func (rs *Routes) getAllByDeportamentName(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		rs.writeNotFound(w)
+		return
+	}
+
+	name := r.URL.Query().Get("name")
+
+	if name == "" {
+		JSON(w, http.StatusBadRequest, map[string]any{
+			"msg": _errQueryIsEmpty.Error(),
+		})
+
+		return
+	}
+
+	emp, err := rs.u.GetByDeportamentName(r.Context(), name)
+	if err != nil {
+		JSON(w, http.StatusTeapot, map[string]any{
+			"msg": err.Error(),
+		})
+
+		return
+	}
+
+	JSON(w, http.StatusOK, emp)
 }

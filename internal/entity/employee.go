@@ -6,7 +6,7 @@ type (
 		Name        string      `bson:"name" json:"name"`
 		Surname     string      `bson:"surname" json:"surname"`
 		Phone       string      `bson:"phone" json:"phone"`
-		CompanyID   int         `bson:"companyID" json:"companyID"`
+		CompanyID   string      `bson:"companyID" json:"companyID"`
 		Passport    Passport    `bson:"passport" json:"passport"`
 		Deportament Deportament `bson:"deportament" json:"deportament"`
 	}

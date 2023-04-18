@@ -1,4 +1,3 @@
-// INFO: entity without primitive object
 package repository
 
 import (
@@ -11,7 +10,7 @@ type empolyeeDTO struct {
 	Name        string             `bson:"name"`
 	Surname     string             `bson:"surname"`
 	Phone       string             `bson:"phone"`
-	CompanyID   int                `bson:"companyID"`
+	CompanyID   string             `bson:"companyID"`
 	Passport    entity.Passport    `bson:"passport"`
 	Deportament entity.Deportament `bson:"deportament"`
 }

@@ -55,7 +55,7 @@ func (r *Repo) DeleteByID(ctx context.Context, id string) error {
 	return nil
 }
 
-func (r *Repo) GetByCompanyID(ctx context.Context, companyID int) ([]entity.Employee, error) {
+func (r *Repo) GetByCompanyID(ctx context.Context, companyID string) ([]entity.Employee, error) {
 	filter := bson.D{{"companyID", companyID}}
 
 	cursor, err := r.Col.Find(ctx, filter)
@@ -118,8 +118,7 @@ func (r *Repo) UpdateByID(ctx context.Context, emp entity.Employee) error {
 		field = append(field, bson.E{"phone", dto.Phone})
 	}
 
-	//NOTE: I think ID 0 not exists
-	if dto.CompanyID != 0 {
+	if dto.CompanyID != "" {
 		field = append(field, bson.E{"companyID", dto.CompanyID})
 	}
 

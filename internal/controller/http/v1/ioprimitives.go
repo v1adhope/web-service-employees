@@ -1,4 +1,3 @@
-// INFO: Out plain/text if problem with marshal
 package v1
 
 import (

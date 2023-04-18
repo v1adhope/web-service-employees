@@ -27,14 +27,14 @@ func GetConfig() *Config {
 				ServerSocket: "0.0.0.0:8090",
 			}
 
-			getEnv(_mongoConURL, &cfg.MongoConURL)
-			getEnv(_serverSocket, &cfg.ServerSocket)
+			fillVarByEnvKey(_mongoConURL, &cfg.MongoConURL)
+			fillVarByEnvKey(_serverSocket, &cfg.ServerSocket)
 		})
 
 	return cfg
 }
 
-func getEnv(key string, placeholder *string) {
+func fillVarByEnvKey(key string, placeholder *string) {
 	if env := os.Getenv(key); env != "" {
 		*placeholder = env
 	}
